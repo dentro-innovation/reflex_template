@@ -1,35 +1,53 @@
 """Welcome to Reflex! This file outlines the steps to create a basic app."""
 
 from rxconfig import config
-
 import reflex as rx
-
-docs_url = "https://reflex.dev/docs/getting-started/introduction/"
-filename = f"{config.app_name}/{config.app_name}.py"
+from .utils.clerk_wrapper import use_user, clerk_provider, signed_in, signed_out, sign_in, user_button, ClerkUser, ClerkUserState
 
 
 class State(rx.State):
     """The app state."""
-
+    
+# def AppContent() -> rx.Component:
+#     user_info = use_user()
+#     user = rx.call_script("useUser()")
+#     # is_signed_in = user_info['isSignedIn']
+#     # user = user_info['user']
+#     # is_loaded = user_info['isLoaded']
+    
+#     return rx.vstack(
+#         rx.hstack(
+#             rx.text(f"Hello my dear {user}!"),
+#             user_button(),
+#         )
+#     )
 
 def index() -> rx.Component:
     return rx.center(
-        rx.theme_panel(),
-        rx.vstack(
-            rx.heading("Welcome to Reflex!", size="9"),
-            rx.text("Get started by editing ", rx.code(filename)),
-            rx.button(
-                "Check out our docs!",
-                on_click=lambda: rx.redirect(docs_url),
-                size="4",
+        clerk_provider(
+        rx.text("Hello World!"),
+            ClerkUser.create(
+                user_button(),
             ),
-            rx.logo(),
-            align="center",
-            spacing="7",
-            font_size="2em",
-        ),
-        height="100vh",
+            rx.button("Print User Info", on_click=ClerkUserState.print_user_info)
+        )
     )
+
+
+# def index() -> rx.Component:
+#     return rx.center(
+#         clerk_provider(
+#             signed_in(
+#                 AppContent()
+#             ),
+#             signed_out(
+#                 rx.center(
+#                     sign_in(),
+#                     padding_top="10em",
+#                 )
+#             ),
+#         ),
+#     )
 
 
 app = rx.App()

@@ -25,11 +25,13 @@ jaraco.functools==4.0.1
 jeepney==0.8.0
 Jinja2==3.1.3
 keyring==25.2.0
+logtail-python==0.2.10
 Mako==1.3.3
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 mdurl==0.1.2
 more-itertools==10.2.0
+msgpack==1.0.8
 nh3==0.2.17
 packaging==24.0
 pipdeptree==2.16.2
@@ -42,6 +44,7 @@ pydantic_core==2.18.2
 Pygments==2.17.2
 pyproject_hooks==1.0.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 python-engineio==4.9.0
 python-multipart==0.0.9
 python-socketio==5.11.2
