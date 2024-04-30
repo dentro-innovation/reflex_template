@@ -16,10 +16,10 @@ def configure_logger():
     logger.addHandler(stream_handler)
 
     if os.environ.get("BETTERSTACK_API_TOKEN"):
-      betterstack_handler = LogtailHandler(
-          source_token=os.environ.get("BETTERSTACK_API_TOKEN")
-      )
-      logger.addHandler(betterstack_handler)
+        betterstack_handler = LogtailHandler(
+            source_token=os.environ.get("BETTERSTACK_API_TOKEN")
+        )
+        logger.addHandler(betterstack_handler)
 
     logging.getLogger("watchfiles.main").setLevel(logging.WARNING)
 
