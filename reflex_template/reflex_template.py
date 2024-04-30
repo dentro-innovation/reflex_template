@@ -11,6 +11,16 @@ logger = logging.getLogger(__name__)
 class State(rx.State):
     """The app state."""
     
+    def handle_get_code(self) -> rx.Component:
+        logger.info(f"user {ClerkUserState.email} gets the code!")
+        
+        return rx.redirect(
+            "https://github.com/dentro-innovation/reflex_template",
+            external=True
+        )
+    
+        
+    
 def AppContent() -> rx.Component:
     return rx.box(
         navbar(),
@@ -33,7 +43,7 @@ def AppContent() -> rx.Component:
                     rx.text("- Docker compose files for production"),
                     rx.text("- Github Action for automatic deployment"),
                     rx.text(),
-                    rx.text("Code can be found at ", rx.link("https://github.com/dentro-innovation/reflex_template", href="https://github.com/dentro-innovation/reflex_template")),
+                    rx.button("Get the code", on_click=State.handle_get_code),
                     padding="3em",
                 ),
                 align="center"

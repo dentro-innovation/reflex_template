@@ -104,8 +104,6 @@ class ClerkUser(rx.Fragment):
             }
         }
         }, [isLoaded, user, addEvents]);
-        
-        //console.log({ isSignedIn, emailAddress: user?.primaryEmailAddress.emailAddress, isLoaded }); // Log the values to the console
         """
 
     @staticmethod
