@@ -12,17 +12,29 @@ class State(rx.State):
     """The app state."""
     
 def AppContent() -> rx.Component:
-    
     return rx.box(
         navbar(),
         rx.center(
             rx.vstack(
-                rx.heading("Hello there!"),
-                rx.cond(
-                    ClerkUserState.name,
-                    rx.text(f"How are you {ClerkUserState.name}?"),
+                rx.heading("Refex Template", padding="1em"),
+                rx.box(
+                    rx.cond(
+                        ClerkUserState.name,
+                        rx.text(f"How are you {ClerkUserState.name}?"),
+                    ),
+                    rx.text(f"I know your email from Clerk: {ClerkUserState.email}"),
+                    padding="1em",
                 ),
-                rx.text(f"Your email is: {ClerkUserState.email}"),
+                rx.divider(),
+                rx.vstack(
+                    rx.text("Reflex template made by the guys from ", rx.link("dentroai.com", href="https://dentroai.com"), " with:"),
+                    rx.text("- Clerk Integration for user management"),
+                    rx.text("- Betterstack Integration to visualize logs"),
+                    rx.text("- Docker compose files for production"),
+                    rx.text("- Github Action for automatic deployment"),
+                    padding="3em",
+                ),
+                align="center"
             )
         )
     )
