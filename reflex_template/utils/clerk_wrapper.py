@@ -1,6 +1,5 @@
 import reflex as rx
 import os
-import json
 
 class ClerkProvider(rx.Component):
     library = "@clerk/clerk-react"
@@ -35,10 +34,6 @@ class SignOutButton(rx.Component):
     library = "@clerk/clerk-react"
     tag = "SignOutButton"
 
-class UseUser(rx.Component):
-    library = "@clerk/clerk-react"
-    tag = "useUser"
-
 
 clerk_provider = ClerkProvider.create
 signed_in = SignedIn.create
@@ -49,23 +44,17 @@ user_button = UserButton.create
 sign_in_button = SignInButton.create
 sign_up_button = SignUpButton.create
 sign_out_button = SignOutButton.create
-use_user = UseUser.create
 
 
 class ClerkUserState(rx.State):
+    email: str = ""
     name: str = ""
-    user_signed_in: bool = False
-
-    def update_user_info(self, user_info_str):
-        print(f"User Info: {user_info_str}")
-        user_info = json.loads(user_info_str)
-        self.name = user_info.get('name', '')
-        self.user_signed_in = user_info.get('user_signed_in', False)
-        return rx.text("User Info Updated!")
-
-    def print_user_info(self):
-        print(f"Name: {self.name}, User Signed In: {self.user_signed_in}")
+    
+    def set_email(self, email: str):
+        self.email = email
         
+    def set_name(self, name: str):
+        self.name = name
 
 class ClerkUser(rx.Fragment):
     def _get_imports(self) -> rx.utils.imports.ImportDict:
@@ -77,26 +66,47 @@ class ClerkUser(rx.Fragment):
                         tag="useUser"
                     ),
                 },
+                "react": {
+                    rx.utils.imports.ImportVar(
+                        tag="useEffect"
+                    ),
+                    rx.utils.imports.ImportVar(
+                        tag="useContext"
+                    ),
+                },
+                "/utils/context": {
+                    rx.utils.imports.ImportVar(
+                        tag="EventLoopContext"
+                    ),
+                },
+                "/utils/state": {
+                    rx.utils.imports.ImportVar(
+                        tag="Event"
+                    ),
+                },
             },
         )
 
     def _get_hooks(self) -> str | None:
         return """
         const { isSignedIn, user, isLoaded } = useUser();
-        console.log({ isSignedIn, fullName: user?.fullName, isLoaded }); // Log the values to the console
-        return { name: user?.fullName, user_signed_in: isSignedIn };
-        """
+        const [addEvents] = useContext(EventLoopContext);
 
-    def get_event_triggers(self):
-        return {
-            **super().get_event_triggers(),
-            "on_mount": lambda: [
-                rx.call_script(
-                    self._get_hooks(),
-                    callback=ClerkUserState.update_user_info
-                )
-            ],
+        useEffect(() => {
+        if (isLoaded && user) {
+            const emailAddress = user?.primaryEmailAddress?.emailAddress;
+            const name = user?.fullName;
+            if (emailAddress) {
+            addEvents([Event("state.clerk_user_state.set_email", {"email": emailAddress})], {}, {}); // Add the event to set the email
+            }
+            if (name) {
+            addEvents([Event("state.clerk_user_state.set_name", {"name": name})], {}, {}); // Add the event to set the name
+            }
         }
+        }, [isLoaded, user, addEvents]);
+        
+        //console.log({ isSignedIn, emailAddress: user?.primaryEmailAddress.emailAddress, isLoaded }); // Log the values to the console
+        """
 
     @staticmethod
     def _get_app_wrap_components() -> dict[tuple[int, str], rx.Component]:
@@ -108,6 +118,3 @@ class ClerkUser(rx.Fragment):
                 after_sign_out_url="/"
             ),
         }
-
-    def render(self):
-        return rx.text("render")

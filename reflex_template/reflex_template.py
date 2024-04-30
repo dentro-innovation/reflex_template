@@ -2,52 +2,44 @@
 
 from rxconfig import config
 import reflex as rx
-from .utils.clerk_wrapper import use_user, clerk_provider, signed_in, signed_out, sign_in, user_button, ClerkUser, ClerkUserState
+from .utils.clerk_wrapper import signed_in, signed_out, sign_in, user_button, ClerkUser, ClerkUserState
+import logging
+from .components.navbar import navbar
 
+logger = logging.getLogger(__name__)
 
 class State(rx.State):
     """The app state."""
     
-# def AppContent() -> rx.Component:
-#     user_info = use_user()
-#     user = rx.call_script("useUser()")
-#     # is_signed_in = user_info['isSignedIn']
-#     # user = user_info['user']
-#     # is_loaded = user_info['isLoaded']
+def AppContent() -> rx.Component:
     
-#     return rx.vstack(
-#         rx.hstack(
-#             rx.text(f"Hello my dear {user}!"),
-#             user_button(),
-#         )
-#     )
-
-def index() -> rx.Component:
-    return rx.center(
-        clerk_provider(
-        rx.text("Hello World!"),
-            ClerkUser.create(
-                user_button(),
-            ),
-            rx.button("Print User Info", on_click=ClerkUserState.print_user_info)
+    return rx.box(
+        navbar(),
+        rx.center(
+            rx.vstack(
+                rx.heading("Hello there!"),
+                rx.cond(
+                    ClerkUserState.name,
+                    rx.text(f"How are you {ClerkUserState.name}?"),
+                ),
+                rx.text(f"Your email is: {ClerkUserState.email}"),
+            )
         )
     )
 
-
-# def index() -> rx.Component:
-#     return rx.center(
-#         clerk_provider(
-#             signed_in(
-#                 AppContent()
-#             ),
-#             signed_out(
-#                 rx.center(
-#                     sign_in(),
-#                     padding_top="10em",
-#                 )
-#             ),
-#         ),
-#     )
+def index() -> rx.Component:
+    return rx.center(
+        ClerkUser.create(),
+            signed_in(
+                AppContent()
+            ),
+            signed_out(
+                rx.center(
+                    sign_in(),
+                    padding_top="10em",
+                )
+            ),
+        )
 
 
 app = rx.App()
