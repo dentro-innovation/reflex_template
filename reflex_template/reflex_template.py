@@ -16,7 +16,7 @@ def AppContent() -> rx.Component:
         navbar(),
         rx.center(
             rx.vstack(
-                rx.heading("Refex Template", padding="1em"),
+                rx.heading("Reflex Template", padding="1em"),
                 rx.box(
                     rx.cond(
                         ClerkUserState.name,
@@ -32,6 +32,8 @@ def AppContent() -> rx.Component:
                     rx.text("- Betterstack Integration to visualize logs"),
                     rx.text("- Docker compose files for production"),
                     rx.text("- Github Action for automatic deployment"),
+                    rx.text(),
+                    rx.text("Code can be found at ", rx.link("https://github.com/dentro-innovation/reflex_template", href="https://github.com/dentro-innovation/reflex_template")),
                     padding="3em",
                 ),
                 align="center"
