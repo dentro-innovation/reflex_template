@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [branchThatDoesntExist]  # branches: [main, dev]
+    branches: [main, dev]
 
 jobs:
   build:
@@ -11,8 +11,6 @@ jobs:
       run: |
 
         # Set common environment variables
-        echo "LANGCHAIN_TRACING_V2=${{ secrets.LANGCHAIN_TRACING_V2 }}" >> $GITHUB_ENV
-        echo "LANGCHAIN_API_KEY=${{ secrets.LANGCHAIN_API_KEY }}" >> $GITHUB_ENV
         echo "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" >> $GITHUB_ENV
         
         # Set branch-specific environment variables
@@ -20,21 +18,13 @@ jobs:
           echo "SETTING PROD VARS"
           echo "DOCKER_HOST=${{ secrets.PROD_DOCKER_HOST }}" >> $GITHUB_ENV
           echo "BETTERSTACK_API_TOKEN=${{ secrets.PROD_BETTERSTACK_API_TOKEN }}" >> $GITHUB_ENV
-          echo "LANGCHAIN_PROJECT=${{ secrets.PROD_LANGCHAIN_PROJECT }}" >> $GITHUB_ENV
-          echo "LANGCHAIN_HIDE_INPUTS=true" >> $GITHUB_ENV
-          echo "LANGCHAIN_HIDE_OUTPUTS=true" >> $GITHUB_ENV
-          echo "ANTHROPIC_API_KEY=${{ secrets.PROD_ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
-          echo "OPENAI_API_KEY=${{ secrets.PROD_OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "CLERK_PUBLISHABLE_KEY=${{ secrets.PROD_CLERK_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
           echo "DOMAIN=${{ secrets.PROD_DOMAIN }}" >> $GITHUB_ENV
         elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
           echo "SETTING DEV VARS"
           echo "DOCKER_HOST=${{ secrets.DEV_DOCKER_HOST }}" >> $GITHUB_ENV
           echo "BETTERSTACK_API_TOKEN=${{ secrets.DEV_BETTERSTACK_API_TOKEN }}" >> $GITHUB_ENV
-          echo "LANGCHAIN_PROJECT=${{ secrets.DEV_LANGCHAIN_PROJECT }}" >> $GITHUB_ENV
-          echo "LANGCHAIN_HIDE_INPUTS=false" >> $GITHUB_ENV
-          echo "LANGCHAIN_HIDE_OUTPUTS=false" >> $GITHUB_ENV
-          echo "ANTHROPIC_API_KEY=${{ secrets.DEV_ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
-          echo "OPENAI_API_KEY=${{ secrets.DEV_OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "CLERK_PUBLISHABLE_KEY=${{ secrets.DEV_CLERK_PUBLISHABLE_KEY }}" >> $GITHUB_ENV
           echo "DOMAIN=${{ secrets.DEV_DOMAIN }}" >> $GITHUB_ENV
         fi
     # put ssh key into right directory to connect to the docker host server
@@ -50,14 +40,8 @@ jobs:
     - name: Create .env file
       run: |
         ssh root@${{ env.DOCKER_HOST }} "cat > /app/.env <<EOL
-        LANGCHAIN_API_KEY=${{ env.LANGCHAIN_API_KEY }}
-        LANGCHAIN_TRACING_V2=${{ env.LANGCHAIN_TRACING_V2 }}
-        LANGCHAIN_PROJECT=${{ env.LANGCHAIN_PROJECT }}
-        LANGCHAIN_HIDE_INPUTS=${{ env.LANGCHAIN_HIDE_INPUTS }}
-        LANGCHAIN_HIDE_OUTPUTS=${{ env.LANGCHAIN_HIDE_OUTPUTS }}
-        ANTHROPIC_API_KEY=${{ env.ANTHROPIC_API_KEY }}
-        OPENAI_API_KEY=${{ env.OPENAI_API_KEY }}
         LOG_LEVEL=${{ env.LOG_LEVEL }}
+        CLERK_PUBLISHABLE_KEY=${{ env.CLERK_PUBLISHABLE_KEY }}
         BETTERSTACK_API_TOKEN=${{ env.BETTERSTACK_API_TOKEN }}
         DOMAIN=${{ env.DOMAIN }}
         EOL"

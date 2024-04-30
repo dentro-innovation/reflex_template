@@ -10,12 +10,7 @@ services:
     image: local/reflex-app
     environment:
       - DB_URL=sqlite:///data/reflex.db
-      - LANGCHAIN_API_KEY
-      - LANGCHAIN_TRACING_V2
-      - LANGCHAIN_PROJECT
-      - LANGCHAIN_HIDE_INPUTS
-      - LANGCHAIN_HIDE_OUTPUTS
-      - ANTHROPIC_API_KEY
+      - CLERK_PUBLISHABLE_KEY
       - LOG_LEVEL
       - BETTERSTACK_API_TOKEN
     build:

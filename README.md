@@ -52,7 +52,7 @@ This Reflex Template facilitates the seamless creation and deployment of Reflex 
 
 <code>► Log Management via Betterstack (logs.betterstack.com)</code>
 
-<code>► Production deployment of reflex app taken from: https://github.com/reflex-dev/reflex/blob/main/docker-example/README.md</code>
+<code>► Production deployment of reflex app taken from: https://github.com/reflex-dev/reflex/blob/main/docker-example/README.md and https://www.youtube.com/watch?v=1iuefsBCHQc</code>
 
 <code>► Github Action workflow adapted from https://github.com/masenf/rx_shout/blob/main/.github/workflows/deploy.yml</code>
 
