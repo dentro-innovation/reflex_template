@@ -42,6 +42,8 @@
 
 ##  Overview
 
+Video Walkthrough: https://www.youtube.com/watch?v=VYPsVksAqOM
+
 This Reflex Template facilitates the seamless creation and deployment of Reflex web applications with robust production environment setups. Leveraging Docker Compose and Caddy for orchestration and web content delivery, the project streamlines service configurations, database management, and secure routing. Automating deployment through GitHub Actions, the project offers an end-to-end solution for building feature-rich web apps with Clerk and Betterstack integrations. Its core functionalities span environment configuration, component creation, authentication handling, and logging customization, empowering developers to focus on crafting engaging user experiences.
 
 ---
