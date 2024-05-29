@@ -11,6 +11,7 @@ services:
     environment:
       - DB_URL=sqlite:///data/reflex.db
       - CLERK_PUBLISHABLE_KEY
+      - CLERK_SECRET_KEY
       - LOG_LEVEL
       - BETTERSTACK_API_TOKEN
     build:
