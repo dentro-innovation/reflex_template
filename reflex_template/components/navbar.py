@@ -1,5 +1,5 @@
 import reflex as rx
-from ..utils.clerk_wrapper import user_button
+import reflex_clerk as clerk
 
 
 def navbar():
@@ -12,7 +12,7 @@ def navbar():
             height="auto",
         ),
         rx.spacer(),
-        user_button(),
+        clerk.user_button(),
         width="100vw",
         padding="1em",
         position="sticky",

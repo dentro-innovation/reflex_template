@@ -42,7 +42,7 @@
 
 ##  Overview
 
-Video Walkthrough: https://www.youtube.com/watch?v=VYPsVksAqOM
+Video Walkthrough: https://www.youtube.com/watch?v=VYPsVksAqOM (Edit 29th May 2024: the video is slightly outdatet since we use the reflex-clerk pypi package instead of manually wrapping the clerk react component)
 
 This Reflex Template facilitates the seamless creation and deployment of Reflex web applications with robust production environment setups. Leveraging Docker Compose and Caddy for orchestration and web content delivery, the project streamlines service configurations, database management, and secure routing. Automating deployment through GitHub Actions, the project offers an end-to-end solution for building feature-rich web apps with Clerk and Betterstack integrations. Its core functionalities span environment configuration, component creation, authentication handling, and logging customization, empowering developers to focus on crafting engaging user experiences.
 
@@ -50,7 +50,7 @@ This Reflex Template facilitates the seamless creation and deployment of Reflex 
 
 ##  Features
 
-<code>► User Management via Clerk (clerk.com)</code>
+<code>► User Management via Clerk (clerk.com) using the reflex-clerk pypi package (https://github.com/kroo/reflex-clerk)</code>
 
 <code>► Log Management via Betterstack (logs.betterstack.com)</code>
 
@@ -122,7 +122,7 @@ This Reflex Template facilitates the seamless creation and deployment of Reflex 
 
 | File                                              | Summary                                                                                                                                             |
 | ---                                               | ---                                                                                                                                                 |
-| [navbar.py](reflex_template/components/navbar.py) | Employs reflex and clerk_wrapper to construct a sticky navbar with a logo, user button, and styling attributes for a cohesive front-end experience. |
+| [navbar.py](reflex_template/components/navbar.py) | Employs reflex and reflex-clerk to construct a sticky navbar with a logo, user button, and styling attributes for a cohesive front-end experience. |
 
 </details>
 
@@ -130,7 +130,7 @@ This Reflex Template facilitates the seamless creation and deployment of Reflex 
 
 | File                                                         | Summary                                                                                                                                                                        |
 | ---                                                          | ---                                                                                                                                                                            |
-| [clerk_wrapper.py](reflex_template/utils/clerk_wrapper.py)   | Defines reusable Clerk components and user state interface. Integrates Clerk authentication with React. Sets up app-wide ClerkProvider and user authentication event handling. |
+
 | [logging_config.py](reflex_template/utils/logging_config.py) | Defines custom log formatting for different log levels in the project, enhancing log clarity and readability by applying distinct colors and styles based on log severity.     |
 
 </details>
@@ -173,7 +173,7 @@ This Reflex Template facilitates the seamless creation and deployment of Reflex 
 
 <h4>From <code>source</code></h4>
 
-> Create .env and set necessary environment variables (at least define CLERK_PUBLISHABLE_KEY):
+> Create .env and set necessary environment variables (at least define CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY):
 > ```console
 > $ mv cp .example.env .env; nano .env
 > ```
@@ -238,6 +238,7 @@ This project is protected under the MIT License. For more details, refer to the 
 
 ##  Acknowledgments
 
+- Elliot Kroo for the reflex-clerk pypi package
 - Masen for debugging the production deployment
 - Alek for the initial Clerk reflex wrapper
 - Lendemor for debugging advanced Clerk Setup with Carl

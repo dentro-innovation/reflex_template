@@ -1,13 +1,9 @@
 """Welcome to Reflex! This file outlines the steps to create a basic app."""
 
 import reflex as rx
-from .utils.clerk_wrapper import (
-    signed_in,
-    signed_out,
-    sign_in,
-    ClerkUser,
-    ClerkUserState,
-)
+import reflex_clerk as clerk
+
+import os
 import logging
 from .components.navbar import navbar
 
@@ -18,7 +14,7 @@ class State(rx.State):
     """The app state."""
 
     def handle_get_code(self) -> rx.Component:
-        logger.info(f"user {ClerkUserState.email} gets the code!")
+        logger.info("a user gets the code!")
 
         return rx.redirect(
             "https://github.com/dentro-innovation/reflex_template", external=True
@@ -33,10 +29,13 @@ def AppContent() -> rx.Component:
                 rx.heading("Reflex Template", padding="1em"),
                 rx.box(
                     rx.cond(
-                        ClerkUserState.name,
-                        rx.text(f"How are you {ClerkUserState.name}?"),
+                        clerk.ClerkState.user.first_name,
+                        rx.text(f"How are you {clerk.ClerkState.user.first_name}?"),
                     ),
-                    rx.text(f"I know your email from Clerk: {ClerkUserState.email}"),
+                    rx.text(
+                        f"I know your email from Clerk: {clerk.ClerkState.user.email_addresses[0].email_address}"
+                    ),
+                    rx.text(f"Are you logged in: {clerk.ClerkState.is_signed_in}"),
                     padding="1em",
                 ),
                 rx.divider(),
@@ -61,15 +60,18 @@ def AppContent() -> rx.Component:
 
 
 def index() -> rx.Component:
-    return rx.center(
-        ClerkUser.create(),
-        signed_in(AppContent()),
-        signed_out(
-            rx.center(
-                sign_in(),
-                padding_top="10em",
-            )
+    return clerk.clerk_provider(
+        rx.center(
+            clerk.signed_in(AppContent()),
+            clerk.signed_out(
+                rx.center(
+                    clerk.sign_in(),
+                    padding_top="10em",
+                )
+            ),
         ),
+        publishable_key=os.getenv("CLERK_PUBLISHABLE_KEY"),
+        secret_key=os.getenv("CLERK_SECRET_KEY"),
     )
 
 
