@@ -13,8 +13,11 @@ logger = logging.getLogger(__name__)
 class State(rx.State):
     """The app state."""
 
-    def handle_get_code(self) -> rx.Component:
-        logger.info("a user gets the code!")
+    async def handle_get_code(self) -> rx.Component:
+        clerkstate = await self.get_state(clerk.ClerkState)
+        logger.info(
+            f"user {clerkstate.user.email_addresses[0].email_address} gets the code!"
+        )
 
         return rx.redirect(
             "https://github.com/dentro-innovation/reflex_template", external=True
