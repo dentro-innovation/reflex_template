@@ -1,4 +1,5 @@
+Authlib==1.3.0
 logtail-python==0.2.10
 python-dotenv==1.0.1
-reflex==0.4.9
+reflex-clerk==1.0.1
 ruff==0.4.2
